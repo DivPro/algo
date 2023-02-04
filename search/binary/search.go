@@ -1,6 +1,6 @@
 package binary
 
-func SearchGE[T any](v T, s []T) int {
+func SearchPos[T any](v T, s []T) int {
 	if len(s) == 0 {
 		return 0
 	}
@@ -13,10 +13,10 @@ func SearchGE[T any](v T, s []T) int {
 	}
 	leftIdx := len(s)/2 - 1
 	if less(v, s[leftIdx]) {
-		return SearchGE(v, s[0:leftIdx])
+		return SearchPos(v, s[0:leftIdx])
 	}
 
-	return SearchGE(v, s[leftIdx+1:]) + leftIdx + 1
+	return SearchPos(v, s[leftIdx+1:]) + leftIdx + 1
 }
 
 func less(i, j any) bool {

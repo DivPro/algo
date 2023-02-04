@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestSort(t *testing.T) {
+func TestSortInts(t *testing.T) {
 	for i, v := range []struct {
 		actual   []int
 		expected []int
@@ -45,23 +45,49 @@ func TestSort(t *testing.T) {
 	}
 }
 
+func TestSortStrings(t *testing.T) {
+	for i, v := range []struct {
+		actual   []string
+		expected []string
+	}{
+		{
+			actual:   []string{"4", "0", "3", "01", "02", "30", "31"},
+			expected: []string{"0", "01", "02", "3", "30", "31", "4"},
+		},
+	} {
+		assert.EqualValues(t, v.expected, Sort(v.actual))
+		t.Logf("#%d passed", i)
+	}
+}
+
 func BenchmarkSort(b *testing.B) {
 	b.ReportAllocs()
 	b.SetBytes(2)
+	b.StopTimer()
+	data := make([]struct {
+		actual []int
+		result []int
+	}, b.N)
 	for i := 0; i < b.N; i++ {
 		count := rand.Intn(3) + 3
-		actual := make([]int, 0, count)
-		for j := 0; j < cap(actual); j++ {
-			actual = append(actual, rand.Intn(100))
+		data[i].actual = make([]int, 0, count)
+		for j := 0; j < cap(data[i].actual); j++ {
+			data[i].actual = append(data[i].actual, rand.Intn(100))
 		}
-		result := Sort(actual)
+	}
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		data[i].result = Sort(data[i].actual)
+	}
+	b.StopTimer()
+	for n := 0; n < b.N; n++ {
+		result, actual := data[n].result, data[n].actual
 		for i := 0; i < len(result)-1; i++ {
 			for j := i + 1; j < len(result); j++ {
-				if result[i] > result[j] {
+				if result[j] > result[j] {
 					b.Error(actual)
 				}
 			}
 		}
-		b.Logf("%v => %v", actual, result)
 	}
 }

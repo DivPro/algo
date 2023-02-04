@@ -12,7 +12,7 @@ func Sort[T any](values []T) []T {
 	result := make([]T, 0, len(values))
 	for i := 0; i < len(values); i++ {
 		v := values[i]
-		pos := binary.SearchGE(v, result)
+		pos := binary.SearchPos(v, result)
 		result = append(result[:pos+1], result[pos:]...)
 		result[pos] = v
 	}

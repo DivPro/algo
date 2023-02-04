@@ -10,7 +10,6 @@ on:
     branches: [ "master" ]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     strategy:
@@ -29,4 +28,4 @@ jobs:
       run: go version
 
     - name: Test
-      run: go test -v ./...
+      run: go test -v ./... -cover -coverprofile cover.out  && go tool cover -func cover.out
