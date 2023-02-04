@@ -83,10 +83,8 @@ func BenchmarkSort(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		result, actual := data[n].result, data[n].actual
 		for i := 0; i < len(result)-1; i++ {
-			for j := i + 1; j < len(result); j++ {
-				if result[j] > result[j] {
-					b.Error(actual)
-				}
+			if result[i] > result[i+1] {
+				b.Error(actual, result)
 			}
 		}
 	}
